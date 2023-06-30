@@ -15,38 +15,58 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Installing
 
-1. Clone the repository to your local machine
+1. Clone the repository to your local machine <br />
 
 ```bash
 git clone https://github.com/dominic-wassef/golander.git
 ```
 
-2. Navigate to the project directory
-`cd golander`
+2. Navigate to the project directory <br />
+```bash
+cd golander
+```
 
-3. Install the necessary dependencies
-`go mod tidy`
+3. Install the necessary dependencies <br />
+```bash
+go mod tidy
+```
 
-4. Set up your database and provide the necessary environment variables for your application to connect to your database. The required variables are:
+4. Set up your database and provide the necessary environment variables for your application to connect.  <br />
 
-`DB_HOST`
-`DB_PORT`
-`DB_USER`
-`DB_PASSWORD`
-`DB_NAME`
-`API_PORT`
-`SCRAPER_URL`
+The required variables are:  <br />
 
-Running the application
-To run the application, use the go run command:
+```bash
+DB_HOST  <br />
+```
+```bash
+DB_PORT  <br />
+```
+```bash
+DB_USER  <br />
+```
+```bash
+DB_PASSWORD  <br />
+```
+```bash
+DB_NAME  <br />
+```
+```bash
+API_PORT  <br />
+```
+```bash
+SCRAPER_URL  <br />
+```
+
+Running the application <br />
+To run the application, use the go run command: <br />
 `go run .`
 
-Built With
-Go - The programming language used
-Gin - The web framework used
-GoColly - The web scraping framework used
-MySQL - The database used
+Built With <br />
+`Go` - The programming language used <br />
+`Gin` - The web framework used <br />
+`GoColly` - The web scraping framework used <br />
+`MySQL` - The database used <br />
 
 
-License
+License <br />
 This project is licensed under the MIT License - see the LICENSE.md file for details
