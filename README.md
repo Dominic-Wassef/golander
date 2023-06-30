@@ -36,25 +36,25 @@ go mod tidy
 The required variables are:  <br />
 
 ```bash
-DB_HOST  <br />
+DB_HOST
 ```
 ```bash
-DB_PORT  <br />
+DB_PORT
 ```
 ```bash
-DB_USER  <br />
+DB_USER
 ```
 ```bash
-DB_PASSWORD  <br />
+DB_PASSWORD
 ```
 ```bash
-DB_NAME  <br />
+DB_NAME
 ```
 ```bash
-API_PORT  <br />
+API_PORT
 ```
 ```bash
-SCRAPER_URL  <br />
+SCRAPER_URL
 ```
 
 Running the application <br />
