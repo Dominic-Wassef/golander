@@ -34,28 +34,13 @@ go mod tidy
 4. Set up your database and provide the necessary environment variables for your application to connect.  <br />
 
 The required variables are:  <br />
-
-```bash
-DB_HOST
-```
-```bash
-DB_PORT
-```
-```bash
-DB_USER
-```
-```bash
-DB_PASSWORD
-```
-```bash
-DB_NAME
-```
-```bash
-API_PORT
-```
-```bash
-SCRAPER_URL
-```
+`DB_HOST`
+`DB_PORT`
+`DB_USER`
+`DB_PASSWORD`
+`DB_NAME`
+`API_PORT`
+`SCRAPER_URL`
 
 Running the application <br />
 To run the application, use the go run command: <br />
