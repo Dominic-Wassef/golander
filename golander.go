@@ -53,7 +53,7 @@ func main() {
 	go apiServer.Start(fmt.Sprintf(":%d", conf.API.Port)) // Start API server in a separate goroutine
 
 	// Create a new scheduler with a 24-hour interval
-	scraper.New(4*time.Second, scraper.ScrapeWithDB(db)) // change interval to 24 hours or your preferred timing
+	scraper.New(24*time.Second, scraper.ScrapeWithDB(db, 1, 10)) // replace 1 and 10 with your desired start and end pages
 
 	// Wait for a termination signal
 	sigs := make(chan os.Signal, 1)

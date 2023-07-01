@@ -6,7 +6,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/dominic-wassef/golander/src/database" // replace USERNAME with your username
+	"github.com/dominic-wassef/golander/src/database"
 	"github.com/gocolly/colly"
 )
 
@@ -19,7 +19,7 @@ type Repository struct {
 }
 
 // Scrape function to perform the actual web scraping
-func Scrape(db *database.Database) { // pass your Database instance as an argument to Scrape
+func Scrape(db *database.Database, pageStart int, pageEnd int) { // pass your Database instance and the page range as arguments to Scrape
 	fmt.Println("Scraping task initiated...")
 
 	// Instantiate default collector
@@ -58,13 +58,15 @@ func Scrape(db *database.Database) { // pass your Database instance as an argume
 		log.Println("Something went wrong:", err)
 	})
 
-	c.Visit("https://github.com/search?l=Go&q=stars%3A%3E0&s=stars&type=Repositories")
+	for i := pageStart; i <= pageEnd; i++ {
+		c.Visit(fmt.Sprintf("https://github.com/search?l=Go&p=%d&q=stars%%3A%%3E0&s=stars&type=Repositories", i))
+	}
 
 	fmt.Println("Scraping task completed.")
 }
 
-func ScrapeWithDB(db *database.Database) func() {
+func ScrapeWithDB(db *database.Database, pageStart int, pageEnd int) func() {
 	return func() {
-		Scrape(db)
+		Scrape(db, pageStart, pageEnd)
 	}
 }
