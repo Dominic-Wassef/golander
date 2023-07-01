@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -23,12 +24,23 @@ func Init(host string, port int, user string, password string, dbname string) (*
 		return nil, err
 	}
 
-	mysqlInfo := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", user, password, host, dbPort, dbname)
+	mysqlInfo := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?parseTime=true", user, password, host, dbPort, dbname)
 
-	db, err := sql.Open("mysql", mysqlInfo)
+	var db *sql.DB
+	for i := 0; i < 5; i++ { // retry up to 5 times
+		db, err = sql.Open("mysql", mysqlInfo)
+		if err == nil {
+			break
+		}
+		time.Sleep(time.Second * 2) // wait for 2 seconds before retrying
+	}
 	if err != nil {
 		return nil, err
 	}
+
+	db.SetConnMaxLifetime(time.Minute * 3)
+	db.SetMaxOpenConns(10)
+	db.SetMaxIdleConns(10)
 
 	err = db.Ping()
 	if err != nil {
@@ -53,7 +65,13 @@ func (db *Database) CreateRepoTable() error {
 		stars VARCHAR(100)
 	)`
 
-	_, err := db.DB.Exec(query)
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec()
 	if err != nil {
 		return fmt.Errorf("failed to create table: %w", err)
 	}
