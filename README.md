@@ -44,7 +44,9 @@ The required variables are:  <br />
 
 Running the application <br />
 To run the application, use the go run command: <br />
-`go run .`
+```bash
+go run .
+```
 
 Built With <br />
 `Go` - The programming language used <br />
