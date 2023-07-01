@@ -38,3 +38,39 @@ func (db *Database) UpsertRepo(r *Repository) error {
 	r.Id = id
 	return nil
 }
+
+func (db *Database) GetAllRepos() ([]*Repository, error) {
+	rows, err := db.DB.Query("SELECT * FROM repositories")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	repos := make([]*Repository, 0)
+	for rows.Next() {
+		repo := new(Repository)
+		err := rows.Scan(&repo.Id, &repo.Name, &repo.Url, &repo.Description, &repo.Language, &repo.Stars)
+		if err != nil {
+			return nil, err
+		}
+		repos = append(repos, repo)
+	}
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+	return repos, nil
+}
+
+func (db *Database) GetRepoByID(id int64) (*Repository, error) {
+	repo := new(Repository)
+	err := db.DB.QueryRow("SELECT * FROM repositories WHERE id=?", id).Scan(&repo.Id, &repo.Name, &repo.Url, &repo.Description, &repo.Language, &repo.Stars)
+	if err != nil {
+		return nil, err
+	}
+	return repo, nil
+}
+
+func (db *Database) DeleteRepoByID(id int64) error {
+	_, err := db.DB.Exec("DELETE FROM repositories WHERE id=?", id)
+	return err
+}
