@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"time"
 
 	"github.com/dominic-wassef/golander/src/database"
 	"github.com/gocolly/colly"
@@ -19,7 +20,7 @@ type Repository struct {
 }
 
 // Scrape function to perform the actual web scraping
-func Scrape(db *database.Database, pageStart int, pageEnd int) { // pass your Database instance and the page range as arguments to Scrape
+func Scrape(db *database.Database, pageStart int, pageEnd int, perPage int, retryCount int, delayBetweenRetries time.Duration) {
 	fmt.Println("Scraping task initiated...")
 
 	// Instantiate default collector
@@ -59,14 +60,22 @@ func Scrape(db *database.Database, pageStart int, pageEnd int) { // pass your Da
 	})
 
 	for i := pageStart; i <= pageEnd; i++ {
-		c.Visit(fmt.Sprintf("https://github.com/search?l=Go&p=%d&q=stars%%3A%%3E0&s=stars&type=Repositories", i))
+		for j := 0; j < retryCount; j++ {
+			err := c.Visit(fmt.Sprintf("https://github.com/search?l=Go&p=%d&q=stars%%3A%%3E0&s=stars&type=Repositories", i))
+			if err != nil {
+				fmt.Println("Error visiting page, retrying after delay:", err)
+				time.Sleep(delayBetweenRetries)
+				continue
+			}
+			break
+		}
 	}
 
 	fmt.Println("Scraping task completed.")
 }
 
-func ScrapeWithDB(db *database.Database, pageStart int, pageEnd int) func() {
+func ScrapeWithDB(db *database.Database, pageStart int, pageEnd int, perPage int, retryCount int, delayBetweenRetries time.Duration) func() {
 	return func() {
-		Scrape(db, pageStart, pageEnd)
+		Scrape(db, pageStart, pageEnd, perPage, retryCount, delayBetweenRetries)
 	}
 }
