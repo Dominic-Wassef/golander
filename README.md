@@ -63,7 +63,7 @@ To run a specific test file, navigate to the file's directory and use the follow
 ```bash
 go test <file_name>
 ```
-Replace <filename> with the name of the test file you want to run. <br />
+Replace `<filename>` with the name of the test file you want to run. <br />
 
 `api_test.go `<br />
 This file tests the pingHandler function of the API. It checks if the API returns a pong response when pinged.
