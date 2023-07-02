@@ -54,16 +54,16 @@ func (database *Database) Close() error {
 	return database.DB.Close()
 }
 
-func (db *Database) CreateRepoTable() error {
-	query := `
-	CREATE TABLE IF NOT EXISTS repositories (
-		id BIGINT AUTO_INCREMENT PRIMARY KEY,
-		name VARCHAR(255) NOT NULL,
-		url VARCHAR(255) NOT NULL UNIQUE,
-		description VARCHAR(1000),
-		language VARCHAR(100),
-		stars VARCHAR(100)
-	)`
+func (db *Database) CreateRepoTable(dbname string) error {
+	query := fmt.Sprintf(`
+		CREATE TABLE IF NOT EXISTS %s.repositories (
+			id BIGINT AUTO_INCREMENT PRIMARY KEY,
+			name VARCHAR(255) NOT NULL,
+			url VARCHAR(255) NOT NULL UNIQUE,
+			description VARCHAR(1000),
+			language VARCHAR(100),
+			stars VARCHAR(100)
+		)`, dbname)
 
 	stmt, err := db.DB.Prepare(query)
 	if err != nil {
